@@ -17,6 +17,7 @@ app.use(currentUserRouter);
 app.use(signinRouter);
 app.use(signupRouter);
 app.use(signoutRouter);
+app.use(errorHandler);
 
 const start = async () => {
   app.listen(3000, () => {
