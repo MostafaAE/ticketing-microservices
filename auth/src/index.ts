@@ -17,6 +17,12 @@ app.use(currentUserRouter);
 app.use(signinRouter);
 app.use(signupRouter);
 app.use(signoutRouter);
+
+// Handle unhandeled routes
+app.all("*", (req, res, next) => {
+  throw new NotFoundError();
+});
+
 app.use(errorHandler);
 
 const start = async () => {
