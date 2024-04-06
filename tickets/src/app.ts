@@ -4,6 +4,7 @@ import "express-async-errors";
 import cookieSession from "cookie-session";
 import { currentUser, errorHandler, NotFoundError } from "@mostatickets/common";
 import { createTicketRouter } from "./routes/new";
+import { showTicketRouter } from "./routes/show";
 
 const app = express();
 app.set("trust proxy", true);
@@ -18,6 +19,7 @@ app.use(
 
 app.use(currentUser);
 app.use(createTicketRouter);
+app.use(showTicketRouter);
 
 // Handle unhandeled routes
 app.all("*", (req, res, next) => {
