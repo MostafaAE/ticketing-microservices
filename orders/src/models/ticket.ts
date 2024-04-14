@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import { Order } from "./order";
+import { OrderStatus } from "@mostatickets/common";
 
 // An interface that describes the properties that are required to create a new ticket
 interface TicketAttrs {
@@ -15,6 +17,7 @@ interface TicketModel extends mongoose.Model<TicketDoc> {
 export interface TicketDoc extends mongoose.Document {
   title: string;
   price: number;
+  isReserved(): Promise<boolean>;
 }
 
 const ticketSchema = new mongoose.Schema(
@@ -42,6 +45,23 @@ const ticketSchema = new mongoose.Schema(
 
 ticketSchema.statics.build = (attrs: TicketAttrs) => {
   return new Ticket(attrs);
+};
+
+ticketSchema.methods.isReserved = async function () {
+  const existingOrder = await Order.findOne({
+    ticket: this,
+    status: {
+      $in: [
+        OrderStatus.AwaitingPayment,
+        OrderStatus.Complete,
+        OrderStatus.Created,
+      ],
+    },
+  });
+
+  if (existingOrder) return true;
+
+  return false;
 };
 
 const Ticket = mongoose.model<TicketDoc, TicketModel>("Ticket", ticketSchema);
