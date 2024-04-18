@@ -20,7 +20,7 @@ function signin() {
     await doRequest();
   }
   return (
-    <form className="container" onSubmit={submitHandler}>
+    <form onSubmit={submitHandler}>
       <h1>Sign In</h1>
       <div className="form-group mb-4">
         <label>Email Address</label>

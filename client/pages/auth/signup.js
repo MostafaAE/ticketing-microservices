@@ -20,7 +20,7 @@ function signup() {
     await doRequest();
   }
   return (
-    <form className="container" onSubmit={submitHandler}>
+    <form onSubmit={submitHandler}>
       <h1>Sign Up</h1>
       <div className="form-group mb-4">
         <label>Email Address</label>
