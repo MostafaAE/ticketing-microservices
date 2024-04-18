@@ -4,10 +4,10 @@ import { useState } from "react";
 function useRequest({ url, method, body, onSuccess }) {
   const [errors, setErrors] = useState(null);
 
-  async function doRequest() {
+  async function doRequest(props = {}) {
     try {
       setErrors(null);
-      const response = await axios[method](url, body);
+      const response = await axios[method](url, { ...body, ...props });
 
       onSuccess(response.data);
       return response.data;
@@ -16,7 +16,7 @@ function useRequest({ url, method, body, onSuccess }) {
         <div className="alert alert-danger">
           <h4>Oops...</h4>
           <ul className="my-0">
-            {err.response.data.errors.map((err) => {
+            {err.response?.data.errors.map((err) => {
               return <li key={err.message}>{err.message}</li>;
             })}
           </ul>
